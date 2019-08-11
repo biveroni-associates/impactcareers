@@ -136,7 +136,12 @@ $(document).ready(function() {
             }else if ( qsRegex ){
                 var this_text = $this[0].outerText;
                 this_text = this_text.replace(/\r/g, "").replace(/\n/g, "");
-                searchResult = this_text.match(qsRegex);
+                var $this_categories = $(this).find('.w-embed .categories').attr('data-categories');
+                if ( $this_categories.match(qsRegex) || this_text.match(qsRegex) ){
+                    searchResult = true;
+                }else{
+                    searchResult = false;
+                }
             }
             var buttonResult = buttonFilter ? $this.is(buttonFilter) : true;
             return searchResult && buttonResult;
@@ -185,7 +190,8 @@ $(document).ready(function() {
 
             buttonFilter = '' ;
             searchQuery = searchQuery.replace(/\s{2,}/g, '').toLowerCase() ;
-            var queries = searchQuery.split(',') ;
+            searchQuery = searchQuery.split(',').join(' ');
+            var queries = searchQuery.split(' ') ;
 
             $( queries ).each ( function(index,value){
                 if ( value.length > 3 ){
