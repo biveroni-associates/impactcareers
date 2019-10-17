@@ -32,7 +32,7 @@ $(document).ready(function() {
                 .replace(/^-+/, '') // Trim - from start of text
                 .replace(/-+$/, ''); // Trim - from end of text // hyphenate filter attr val
             _this.parent().parent().addClass(newVal);
-             if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
+            if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
         });
     });
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
                 .replace(/^-+/, '') // Trim - from start of text
                 .replace(/-+$/, ''); // Trim - from end of text // hyphenate filter attr val
             _this.parent().parent().addClass(newVal);
-             if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
+            if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
 
             if ( /(ü|ä|ö)/gi.test(value) ){
                 let newVal = value
@@ -65,7 +65,7 @@ $(document).ready(function() {
                     .replace(/^-+/, '') // Trim - from start of text
                     .replace(/-+$/, ''); // Trim - from end of text // hyphenate filter attr val
                 _this.parent().parent().addClass(newVal);
-                 if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
+                if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
             }
 
             if ( /(u|a|o)/gi.test(value) ){
@@ -81,7 +81,7 @@ $(document).ready(function() {
                     .replace(/^-+/, '') // Trim - from start of text
                     .replace(/-+$/, ''); // Trim - from end of text // hyphenate filter attr val
                 _this.parent().parent().addClass(newVal);
-                 if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
+                if ( allFilterClasses.indexOf(newVal) < 0 ) allFilterClasses.push(newVal);
             }
 
         });
@@ -134,10 +134,11 @@ $(document).ready(function() {
                     searchResult = false;
                 }
             }else if ( qsRegex ){
+                var this_class_list = $this[0].className;
                 var this_text = $this[0].outerText;
                 this_text = this_text.replace(/\r/g, "").replace(/\n/g, "");
                 var $this_categories = $(this).find('.w-embed .categories').attr('data-categories');
-                if ( $this_categories.match(qsRegex) || this_text.match(qsRegex) ){
+                if ( qsRegex.test($this_categories) || qsRegex.test(this_text) || qsRegex.test(this_class_list)  ){
                     searchResult = true;
                 }else{
                     searchResult = false;
@@ -186,7 +187,7 @@ $(document).ready(function() {
         var searchQuery = $quicksearch.val().trim();
         var queryArray = [];
 
-        if ( searchQuery != '' && searchQuery.length > 3 ) {
+        if ( searchQuery != '' && searchQuery.length > 2 ) {
 
             buttonFilter = '' ;
             searchQuery = searchQuery.replace(/\s{2,}/g, '').toLowerCase() ;
@@ -194,7 +195,7 @@ $(document).ready(function() {
             var queries = searchQuery.split(' ') ;
 
             $( queries ).each ( function(index,value){
-                if ( value.length > 3 ){
+                if ( value.length > 2 ){
                     let makeStr = value;
                     if ( /(ü|ä|ö)/gi.test(value) ){
                         let newVal = value
@@ -214,7 +215,9 @@ $(document).ready(function() {
                     queryArray.push(makeStr);
                 }
             });
+
             qsRegex = new RegExp("(?=.*"+queryArray.join(")(?=.*")+")","gi");
+            console.log ( qsRegex );
         }else {
             qsRegex = '';
             buttonFilter = prevButtonFilter;
